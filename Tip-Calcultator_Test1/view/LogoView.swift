@@ -9,12 +9,28 @@ import UIKit
 
 class LogoView: UIView {
     
-    private var logoViewLabel: UILabel = {
-        var label = UILabel()
-        label.text = "Testing"
+    init() {
+        super.init(frame: .zero)///let's pass it zero because we're going to use auto layout so we don't really care about frames.
+        layout()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+//    private var logoViewLabel: UILabel = {
+//        var label = UILabel()
+//        label.text = "Testing"
+//
+//        return label
+//    }()
+    
+    private func layout() {
         
-        return label
-    }()
-    
-    
+        backgroundColor = .red
+        
+    }
+     
 }
+
+
