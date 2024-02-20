@@ -41,6 +41,7 @@ class CalculatorVC: UIViewController {
     }
     
     private func layout() {
+        view.backgroundColor = ThemeColor.bg
         view.addSubview(vStackView)///Add vStackView to main view.
 
         ///So we're going to use SNAP kit to help us to perform this auto layout.
