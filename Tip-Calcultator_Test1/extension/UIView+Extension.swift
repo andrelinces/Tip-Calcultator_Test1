@@ -21,5 +21,8 @@ extension UIView {///Extension to customize the UIView, with shadown, type simil
         layer.backgroundColor = backgroundCGColor
     }
     
-    
+    func addCornerRadius (radius: CGFloat) {///Extension to customize the UIView with corner radius on the edges.
+        layer.masksToBounds = false
+        layer.cornerRadius = radius
+    }
 }
