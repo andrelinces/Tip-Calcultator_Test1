@@ -25,4 +25,9 @@ extension UIView {///Extension to customize the UIView, with shadown, type simil
         layer.masksToBounds = false
         layer.cornerRadius = radius
     }
+    
+    func addRoundedCorners(corners: CACornerMask, radius: CGFloat) {///Extension to customize the UIView with Rounded Corners
+        layer.cornerRadius = radius
+        layer.maskedCorners = [corners]
+    }
 }
