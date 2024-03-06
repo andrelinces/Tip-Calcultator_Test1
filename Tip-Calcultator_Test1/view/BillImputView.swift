@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Combine
+import CombineCocoa ///Creates the interface to listen to events that are happening, that are happening inside the UI components.
 
 class BillImputView: UIView {
     
@@ -60,13 +62,28 @@ class BillImputView: UIView {
         return textField
     }()
     
+    private let billSubject: PassthroughSubject<Double, Never> = .init()
+    var valuePublisher: AnyPublisher<Double, Never> {/// billPublisher will be the variable accessible by other classes, since billSubject is private.
+        return billSubject.eraseToAnyPublisher()
+    }
+    
+    private var cancellables = Set<AnyCancellable>()
+    
     init() {
         super.init(frame: .zero)///let's pass it zero because we're going to use auto layout so we don't really care about frames.
         layout()
+        observe()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func observe() {
+        textField.textPublisher.sink { [unowned self]text in
+            billSubject.send(text?.doubleValue ?? 0)///This is how we send information to the pass through subject.
+            print("text:  \(text)")
+        }.store(in: &cancellables)
     }
   
     private func layout() {

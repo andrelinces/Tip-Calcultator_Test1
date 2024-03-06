@@ -47,8 +47,13 @@ class CalculatorVC: UIViewController {
     
     private func bind() {
         
+        //testing... Passing viewcontroller values.
+//        billImputView.valuePublisher.sink { bill in
+//            print("bill: \(bill)")
+//        }.store(in: &cancellables)
+        
         let input = CalculatorVM.Input(
-            billPublisher: Just(10).eraseToAnyPublisher(),
+            billPublisher: billImputView.valuePublisher,
             tipPublisher: Just(.tenPercent).eraseToAnyPublisher(),
             splitPublisher: Just(5).eraseToAnyPublisher())
         
