@@ -26,10 +26,16 @@ class CalculatorVM {
     
     func transform(input: Input) -> Output {///Method for binding the view controller with the View model.
         
-        //testing... Passing viewcontroller values.
+        //testing...BillImputView Passing viewcontroller values.
 //        input.billPublisher.sink { billVM in  /// You notice that now inside the Transform method, I'm able to have access to the View.
 //            print("billVM: \(billVM)")
 //        }.store(in: &cancellables)
+        
+        //testing...TipImputView Passing viewcontroller values.
+                input.tipPublisher.sink { tipVM in  /// You notice that now inside the Transform method, I'm able to have access to the View.
+                    print("tipVM: \(tipVM)")
+                }.store(in: &cancellables)
+        
         
         let result = Result(
             amountPerPerson: 500,

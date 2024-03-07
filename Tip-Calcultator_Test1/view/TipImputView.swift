@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Combine
+import CombineCocoa
 
 class TipImputView: UIView {
     
@@ -19,16 +21,28 @@ class TipImputView: UIView {
     
     private lazy var tenPercentTipButton: UIButton = {///I'll be doing some referencing of the self later, so I'm going to use a lazy var.
         let button = buildTipButton(tip: .tenPercent)///I'm creating this button reference here is because subsequently we'll be adding some properties inside over here.
+        button.tapPublisher.flatMap ({/// It observes each time the button is tapped and sends information with the value of the respective button, I'm going to transform this tap event Publisher and just is a publisher.
+            Just(Tip.tenPercent)
+        }).assign(to: \.value, on: tipSubject)
+            .store(in: &cancellables)
         return button
     }()
     
-    private lazy var fifteenPercentTipButton: UIButton = {///I'll be doing some referencing of the self later, so I'm going to use a lazy var.
-        let button = buildTipButton(tip: .fifteenPercent)///I'm creating this button reference here is because subsequently we'll be adding some properties inside over here.
+    private lazy var fifteenPercentTipButton: UIButton = {
+        let button = buildTipButton(tip: .fifteenPercent)
+        button.tapPublisher.flatMap ({
+            Just(Tip.fifteenPercent)
+        }).assign(to: \.value, on: tipSubject)
+            .store(in: &cancellables)
         return button
     }()
     
-    private lazy var twentyPercentTipButton: UIButton = {///I'll be doing some referencing of the self later, so I'm going to use a lazy var.
-        let button = buildTipButton(tip: .TwentyPercent)///I'm creating this button reference here is because subsequently we'll be adding some properties inside over here.
+    private lazy var twentyPercentTipButton: UIButton = {
+        let button = buildTipButton(tip: .TwentyPercent)
+        button.tapPublisher.flatMap ({
+            Just(Tip.TwentyPercent)
+        }).assign(to: \.value, on: tipSubject)
+            .store(in: &cancellables)
         return button
     }()
     
@@ -68,6 +82,12 @@ class TipImputView: UIView {
         return stackView
     }()
     
+    private let tipSubject = CurrentValueSubject<Tip, Never>(.nome)
+    var valuePublisher: AnyPublisher<Tip, Never> {
+        return tipSubject.eraseToAnyPublisher()
+    }
+    
+    private var cancellables = Set<AnyCancellable>()
     
     init() {
         super.init(frame: .zero)///let's pass it zero because we're going to use auto layout so we don't really care about frames.

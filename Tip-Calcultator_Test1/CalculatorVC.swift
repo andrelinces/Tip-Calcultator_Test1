@@ -45,7 +45,7 @@ class CalculatorVC: UIViewController {
         bind()
     }
     
-    private func bind() {
+    private func bind() { /// Function to bind the values ​​passed between Viewcontroller and CalculatorVM
         
         //testing... Passing viewcontroller values.
 //        billImputView.valuePublisher.sink { bill in
@@ -53,8 +53,8 @@ class CalculatorVC: UIViewController {
 //        }.store(in: &cancellables)
         
         let input = CalculatorVM.Input(
-            billPublisher: billImputView.valuePublisher,
-            tipPublisher: Just(.tenPercent).eraseToAnyPublisher(),
+            billPublisher: billImputView.valuePublisher, /// Just(500).eraseToAnyPublisher() TEST VALUES
+            tipPublisher: tipImputView.valuePublisher,
             splitPublisher: Just(5).eraseToAnyPublisher())
         
         let output = vm.transform(input: input)
