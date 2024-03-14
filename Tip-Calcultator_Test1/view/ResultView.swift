@@ -41,6 +41,23 @@ class ResultView: UIView {
         layout()
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configure(result: Result) { // Upadates the resultview with the calculated values.
+        let text = NSMutableAttributedString(
+            string: result.amountPerPerson.currencyFormatted,
+            attributes: [.font: ThemeFont.bold(ofSize: 48)])
+        text.addAttributes([
+            .font: ThemeFont.bold(ofSize: 24)
+        ], range: NSMakeRange(0, 1))
+        amountPerPersonLabel.attributedText = text
+        
+        totalBillView.configure(amount: result.totalBill)
+        totalTipView.configure(amount: result.totalTip)
+    }
+    
     private lazy var vStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             headerLabel,
@@ -54,26 +71,31 @@ class ResultView: UIView {
         return stackView
     }()
     
+    private let totalBillView: AmountView = { /// creating the reference to the accessible also of this hitch stack view.
+        let view = AmountView(
+            title: "Total bill",
+            textAlignment: .left)
+        return view
+    }()
+    
+    private let totalTipView: AmountView = { /// creating the reference to the accessible also of this hitch stack view.
+        let view = AmountView(
+            title: "Total tip",
+            textAlignment: .right)
+        return view
+    }()
+    
     private lazy var hStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-            AmountView(
-                title: "Total bill",
-                textAlignment: .left),
+            totalBillView,
             UIView(),///fill in the blank.
-            AmountView(
-                title: "Total tip",
-                textAlignment: .right)
+            totalTipView
         ])
         stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
+        stackView.distribution = .fillProportionally //.fillEqually cuting view
         return stackView
     }()
     
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-  
     private func layout() {///Testing the view with a color.
         backgroundColor = .white
         addSubview(vStackView)

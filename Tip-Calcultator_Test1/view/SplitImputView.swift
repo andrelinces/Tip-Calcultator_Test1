@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Combine
+import CombineCocoa
 
 class SplitImputView: UIView {
     
@@ -20,14 +22,22 @@ class SplitImputView: UIView {
     private lazy var decrementButton: UIButton = {
         let button = buildButton(
             text: "-",
-            corners: [.layerMinXMaxYCorner, .layerMinXMinYCorner])///Changes the corner radius only on the outside of the left button, which will decrease.
+            corners: [.layerMinXMaxYCorner, .layerMinXMinYCorner])/// Changes the corner radius only on the outside of the left button, which will decrease.
+        button.tapPublisher.flatMap { [unowned self] _ in /// So basically when the publisher is being fired, it's going to return a void, which we don't need, because this using _
+            Just(splitSubject.value == 1 ? 1 : splitSubject.value - 1) /// Tenary operatior:  Let me check if it's equals to one. If it's equal to one, let's let's return one. Otherwise, let's return split subject value minus one.
+        }.assign(to: \.value, on:  splitSubject)
+            .store(in: &cancellable)
         return button
     }()
     
     private lazy var incrementButton: UIButton = {
         let button = buildButton(
             text: "+",
-            corners: [.layerMaxXMinYCorner, .layerMaxXMaxYCorner])///All right, so you can play around with this to define where the curves you want it to be on the button itself.
+            corners: [.layerMaxXMinYCorner, .layerMaxXMaxYCorner])/// All right, so you can play around with this to define where the curves you want it to be on the button itself.
+        button.tapPublisher.flatMap { [unowned self] _ in
+            Just(splitSubject.value + 1)
+        }.assign(to: \.value, on:  splitSubject)
+            .store(in: &cancellable)
         return button
     }()
     
@@ -50,15 +60,27 @@ class SplitImputView: UIView {
         return stackView
     }()
     
+    private let splitSubject: CurrentValueSubject<Int, Never> = .init(1) /// This is another way to initialize this, Starting the creation of constants to retrieve data from the view controller.
+    var valuePusblisher: AnyPublisher<Int, Never> {
+        return splitSubject.removeDuplicates().eraseToAnyPublisher() /// removeDuplicates() = remove repeated numbers.
+    }
+    
+    private var cancellable = Set<AnyCancellable>()
+    
     init() {
-        super.init(frame: .zero)///let's pass it zero because we're going to use auto layout so we don't really care about frames.
+        super.init(frame: .zero) /// let's pass it zero because we're going to use auto layout so we don't really care about frames.
         layout()
+        observeUpdateSplitLabel()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
   
+    func reset() {
+        splitSubject.send(1)
+    }
+    
     private func layout() {
         
         [headerView, splitStackView].forEach(addSubview(_:))
@@ -80,6 +102,13 @@ class SplitImputView: UIView {
             make.width.equalTo(68)
         }
         
+    }
+    
+    private func observeUpdateSplitLabel() {
+        splitSubject.sink { [unowned self] quantity in
+            quantityLabel.text = quantity.stringValue
+        }.store(in: &cancellable)
+            
     }
     
     private func buildButton(text: String, corners: CACornerMask) -> UIButton {
