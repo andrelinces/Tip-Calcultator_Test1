@@ -15,13 +15,13 @@ class CalculatorVM {
         let tipPublisher: AnyPublisher<Tip, Never>
         let splitPublisher: AnyPublisher<Int, Never>
         let logoViewTapPublisher: AnyPublisher<Void, Never> /// Because this has to match this viewController signature.
-        let viewTapPublisher: AnyPublisher<Void, Never> /// Because this has to match this viewController signature.
+    //    let viewTapPublisher: AnyPublisher<Void, Never> /// Because this has to match this viewController signature.
     }
     
     struct Output {
         let updateViewPublisher: AnyPublisher<Result, Never> ///Updates the view controller.
         let resetCalculatorPublisher: AnyPublisher<Void, Never> /// Basically, we want it to reset the form so I can do let reset calculator, reset form, reset calculator
-        let hidesViewTapPublisher: AnyPublisher<Void, Never>  /// Hides the keybord.
+     //   let hidesViewTapPublisher: AnyPublisher<Void, Never>  /// Hides the keybord.
     }
     
     private var cancellables = Set<AnyCancellable>()
@@ -72,11 +72,12 @@ class CalculatorVM {
         }.eraseToAnyPublisher()
         
         
-        let hidesViewTapPublisher = input.viewTapPublisher
+   //     let hidesViewTapPublisher = input.viewTapPublisher
         
         return Output(updateViewPublisher: updateViewPublisher, /// I can just pass in the publisher here
-                      resetCalculatorPublisher: resetCalculatorPublisher,
-                      hidesViewTapPublisher: hidesViewTapPublisher)
+                      resetCalculatorPublisher: resetCalculatorPublisher
+                     // hidesViewTapPublisher: hidesViewTapPublisher
+        )
     }
     
     private func getTipAmount(bill: Double, tip: Tip) -> Double { /// Func to calculate, use the bill and then we multiply it by the tip percentage.

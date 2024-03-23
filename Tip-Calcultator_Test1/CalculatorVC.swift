@@ -77,8 +77,9 @@ class CalculatorVC: UIViewController {
             billPublisher: billImputView.valuePublisher, /// Just(500).eraseToAnyPublisher() TEST VALUES
             tipPublisher: tipImputView.valuePublisher,
             splitPublisher: splitImputView.valuePusblisher,   ///Just(5).eraseToAnyPublisher()) TEST VALUES
-            logoViewTapPublisher: logoViewTapPublisher,
-            viewTapPublisher: viewTapPublisher)
+            logoViewTapPublisher: logoViewTapPublisher
+           // viewTapPublisher: viewTapPublisher
+        )
             
         let output = vm.transform(input: input)
         
@@ -157,8 +158,6 @@ class CalculatorVC: UIViewController {
         }
 
     }
-    
-    
-
+         
 }
 

@@ -23,6 +23,7 @@ class SplitImputView: UIView {
         let button = buildButton(
             text: "-",
             corners: [.layerMinXMaxYCorner, .layerMinXMinYCorner])/// Changes the corner radius only on the outside of the left button, which will decrease.
+        button.accessibilityIdentifier = ScreenIdentifier.SplitInputView.decrementButton.rawValue
         button.tapPublisher.flatMap { [unowned self] _ in /// So basically when the publisher is being fired, it's going to return a void, which we don't need, because this using _
             Just(splitSubject.value == 1 ? 1 : splitSubject.value - 1) /// Tenary operatior:  Let me check if it's equals to one. If it's equal to one, let's let's return one. Otherwise, let's return split subject value minus one.
         }.assign(to: \.value, on:  splitSubject)
@@ -34,6 +35,7 @@ class SplitImputView: UIView {
         let button = buildButton(
             text: "+",
             corners: [.layerMaxXMinYCorner, .layerMaxXMaxYCorner])/// All right, so you can play around with this to define where the curves you want it to be on the button itself.
+        button.accessibilityIdentifier = ScreenIdentifier.SplitInputView.incrementButton.rawValue
         button.tapPublisher.flatMap { [unowned self] _ in
             Just(splitSubject.value + 1)
         }.assign(to: \.value, on:  splitSubject)
@@ -46,6 +48,7 @@ class SplitImputView: UIView {
             text: "1",
             font: ThemeFont.bold(ofSize: 20),
             backgroundColor: .white)
+        label.accessibilityIdentifier = ScreenIdentifier.SplitInputView.quantityValueLabel.rawValue
         return label
     }()
     

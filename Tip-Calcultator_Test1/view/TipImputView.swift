@@ -21,6 +21,7 @@ class TipImputView: UIView {
     
     private lazy var tenPercentTipButton: UIButton = {///I'll be doing some referencing of the self later, so I'm going to use a lazy var.
         let button = buildTipButton(tip: .tenPercent)///I'm creating this button reference here is because subsequently we'll be adding some properties inside over here.
+        button.accessibilityIdentifier = ScreenIdentifier.TipInputView.tenPercentButton.rawValue /// To be used in UI testing.
         button.tapPublisher.flatMap ({/// It observes each time the button is tapped and sends information with the value of the respective button, I'm going to transform this tap event Publisher and just is a publisher.
             Just(Tip.tenPercent)
         }).assign(to: \.value, on: tipSubject)
@@ -30,6 +31,7 @@ class TipImputView: UIView {
     
     private lazy var fifteenPercentTipButton: UIButton = {
         let button = buildTipButton(tip: .fifteenPercent)
+        button.accessibilityIdentifier = ScreenIdentifier.TipInputView.fifteenPercentButton.rawValue
         button.tapPublisher.flatMap ({
             Just(Tip.fifteenPercent)
         }).assign(to: \.value, on: tipSubject)
@@ -39,6 +41,7 @@ class TipImputView: UIView {
     
     private lazy var twentyPercentTipButton: UIButton = {
         let button = buildTipButton(tip: .TwentyPercent)
+        button.accessibilityIdentifier = ScreenIdentifier.TipInputView.twentyPercentButton.rawValue
         button.tapPublisher.flatMap ({
             Just(Tip.TwentyPercent)
         }).assign(to: \.value, on: tipSubject)

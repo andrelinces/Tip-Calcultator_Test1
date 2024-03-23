@@ -13,6 +13,7 @@ class AmountView: UIView {///So I'm just going to create separate views, but thi
     
     private let title: String
     private let textAlignment: NSTextAlignment ///So since I since I made this property a mandatory, I have to inject this inside the initialize.
+    private let amountLabelIdentifier: String /// Inject in the UITest label identifier
     
     private lazy var titleLabel: UILabel = {
         LabelFactor.build(
@@ -35,6 +36,7 @@ class AmountView: UIView {///So I'm just going to create separate views, but thi
         text.addAttributes([.font: ThemeFont.bold(ofSize: 16)
                            ], range: NSMakeRange(0, 1))
         label.attributedText = text
+        label.accessibilityIdentifier = amountLabelIdentifier
         return label
     }()
     
@@ -49,9 +51,10 @@ class AmountView: UIView {///So I'm just going to create separate views, but thi
     }()
     
     
-    init(title: String, textAlignment: NSTextAlignment) {///Custom initializer to inject the attributes, text and textAlignment.
+    init(title: String, textAlignment: NSTextAlignment, amountLabelIdentifier: String) {///Custom initializer to inject the attributes, text and textAlignment.
         self.title = title
         self.textAlignment = textAlignment
+        self.amountLabelIdentifier = amountLabelIdentifier
         super.init(frame: .zero) ///.zero, because of  auto layout.
         layout()
     }
