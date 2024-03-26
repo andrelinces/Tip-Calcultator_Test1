@@ -55,6 +55,7 @@ class TipImputView: UIView {
         button.titleLabel?.font = ThemeFont.bold(ofSize: 20)
         button.tintColor = .white
         button.backgroundColor = ThemeColor.primary
+        button.accessibilityIdentifier = ScreenIdentifier.TipInputView.customTipButton.rawValue
         button.addCornerRadius(radius: 8.0)
         button.tapPublisher.sink { [weak self] _ in /// Receives the touch of the button using CombineCocoa and accesses the function with the alert to customize the tip values.
             self?.handleCustomTipButton()
@@ -136,6 +137,7 @@ class TipImputView: UIView {
                 textField.placeholder = "Make it genereous!"
                 textField.keyboardType = .numberPad
                 textField.autocorrectionType = .no /// So we won't have any suggestion over here.
+                textField.accessibilityIdentifier = ScreenIdentifier.TipInputView.customTipAlertTextField.rawValue /// Identifier created to use in UI testing, simulating the value entered in the customization alert, CustomTip.
             }
             
             let cancelAction = UIAlertAction(
